@@ -49,8 +49,10 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
-    name character varying(30),
-    has_number_of_stars integer
+    name character varying(30) NOT NULL,
+    has_number_of_stars integer,
+    distance_from_earth numeric,
+    type character varying(20)
 );
 
 
@@ -84,9 +86,10 @@ ALTER SEQUENCE public.galaxy_galaxy_id_seq OWNED BY public.galaxy.galaxy_id;
 
 CREATE TABLE public.moon (
     moon_id integer NOT NULL,
-    name character varying(30),
+    name character varying(30) NOT NULL,
     has_life boolean,
-    planet_id integer
+    planet_id integer,
+    distance_from_earth numeric
 );
 
 
@@ -120,7 +123,7 @@ ALTER SEQUENCE public.moon_moon_id_seq OWNED BY public.moon.moon_id;
 
 CREATE TABLE public.planet (
     planet_id integer NOT NULL,
-    name character varying(30),
+    name character varying(30) NOT NULL,
     has_number_of_moons integer,
     has_life boolean,
     galaxy_id integer,
@@ -160,8 +163,8 @@ ALTER SEQUENCE public.planet_planet_id_seq OWNED BY public.planet.planet_id;
 
 CREATE TABLE public.space_ship (
     space_ship_id integer NOT NULL,
-    origin_planet integer NOT NULL,
-    current_location integer NOT NULL,
+    planet_id integer NOT NULL,
+    galaxy_id integer NOT NULL,
     name character varying(30)
 );
 
@@ -196,9 +199,11 @@ ALTER SEQUENCE public.space_ship_space_ship_id_seq OWNED BY public.space_ship.sp
 
 CREATE TABLE public.star (
     star_id integer NOT NULL,
-    name character varying(30),
+    name character varying(30) NOT NULL,
     has_number_of_planets integer,
-    galaxy_id integer
+    galaxy_id integer,
+    distance_from_earth numeric,
+    type character varying(20)
 );
 
 
@@ -265,42 +270,42 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.galaxy VALUES (1, 'Milky way', 200);
-INSERT INTO public.galaxy VALUES (2, 'Andromeda', 150);
-INSERT INTO public.galaxy VALUES (3, 'Triangulum', 100);
-INSERT INTO public.galaxy VALUES (4, 'Messier 87', 200);
-INSERT INTO public.galaxy VALUES (5, 'Centaurus A', 180);
-INSERT INTO public.galaxy VALUES (6, 'Whirlpool', 170);
+INSERT INTO public.galaxy VALUES (1, 'Milky way', 200, NULL, NULL);
+INSERT INTO public.galaxy VALUES (2, 'Andromeda', 150, NULL, NULL);
+INSERT INTO public.galaxy VALUES (3, 'Triangulum', 100, NULL, NULL);
+INSERT INTO public.galaxy VALUES (4, 'Messier 87', 200, NULL, NULL);
+INSERT INTO public.galaxy VALUES (5, 'Centaurus A', 180, NULL, NULL);
+INSERT INTO public.galaxy VALUES (6, 'Whirlpool', 170, NULL, NULL);
 
 
 --
 -- Data for Name: moon; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.moon VALUES (73, 'Luna', false, 15);
-INSERT INTO public.moon VALUES (74, 'Phobos', false, 2);
-INSERT INTO public.moon VALUES (75, 'Deimos', false, 2);
-INSERT INTO public.moon VALUES (76, 'Ganymede', false, 3);
-INSERT INTO public.moon VALUES (77, 'Europa', false, 3);
-INSERT INTO public.moon VALUES (78, 'Callisto', false, 3);
-INSERT INTO public.moon VALUES (79, 'Io', false, 3);
-INSERT INTO public.moon VALUES (80, 'Titan', false, 4);
-INSERT INTO public.moon VALUES (81, 'Enceladus', false, 4);
-INSERT INTO public.moon VALUES (82, 'Triton', false, 5);
-INSERT INTO public.moon VALUES (83, 'Charon', false, 6);
-INSERT INTO public.moon VALUES (84, 'Phobos II', false, 7);
-INSERT INTO public.moon VALUES (85, 'Endor', true, 8);
-INSERT INTO public.moon VALUES (86, 'Luna II', false, 19);
-INSERT INTO public.moon VALUES (87, 'Tethys', false, 4);
-INSERT INTO public.moon VALUES (88, 'Dione', false, 4);
-INSERT INTO public.moon VALUES (89, 'Rhea', false, 4);
-INSERT INTO public.moon VALUES (90, 'Iapetus', false, 4);
-INSERT INTO public.moon VALUES (91, 'Titania', false, 18);
-INSERT INTO public.moon VALUES (92, 'Mondas', true, 16);
-INSERT INTO public.moon VALUES (93, 'Telos', true, 15);
-INSERT INTO public.moon VALUES (94, 'Skaro II', true, 29);
-INSERT INTO public.moon VALUES (95, 'Gallifrey II', true, 19);
-INSERT INTO public.moon VALUES (96, 'Clom', true, 15);
+INSERT INTO public.moon VALUES (73, 'Luna', false, 15, NULL);
+INSERT INTO public.moon VALUES (74, 'Phobos', false, 2, NULL);
+INSERT INTO public.moon VALUES (75, 'Deimos', false, 2, NULL);
+INSERT INTO public.moon VALUES (76, 'Ganymede', false, 3, NULL);
+INSERT INTO public.moon VALUES (77, 'Europa', false, 3, NULL);
+INSERT INTO public.moon VALUES (78, 'Callisto', false, 3, NULL);
+INSERT INTO public.moon VALUES (79, 'Io', false, 3, NULL);
+INSERT INTO public.moon VALUES (80, 'Titan', false, 4, NULL);
+INSERT INTO public.moon VALUES (81, 'Enceladus', false, 4, NULL);
+INSERT INTO public.moon VALUES (82, 'Triton', false, 5, NULL);
+INSERT INTO public.moon VALUES (83, 'Charon', false, 6, NULL);
+INSERT INTO public.moon VALUES (84, 'Phobos II', false, 7, NULL);
+INSERT INTO public.moon VALUES (85, 'Endor', true, 8, NULL);
+INSERT INTO public.moon VALUES (86, 'Luna II', false, 19, NULL);
+INSERT INTO public.moon VALUES (87, 'Tethys', false, 4, NULL);
+INSERT INTO public.moon VALUES (88, 'Dione', false, 4, NULL);
+INSERT INTO public.moon VALUES (89, 'Rhea', false, 4, NULL);
+INSERT INTO public.moon VALUES (90, 'Iapetus', false, 4, NULL);
+INSERT INTO public.moon VALUES (91, 'Titania', false, 18, NULL);
+INSERT INTO public.moon VALUES (92, 'Mondas', true, 16, NULL);
+INSERT INTO public.moon VALUES (93, 'Telos', true, 15, NULL);
+INSERT INTO public.moon VALUES (94, 'Skaro II', true, 29, NULL);
+INSERT INTO public.moon VALUES (95, 'Gallifrey II', true, 19, NULL);
+INSERT INTO public.moon VALUES (96, 'Clom', true, 15, NULL);
 
 
 --
@@ -347,12 +352,12 @@ INSERT INTO public.space_ship VALUES (16, 8, 2, 'Endeavour');
 -- Data for Name: star; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.star VALUES (1, 'Sun', 8, 1);
-INSERT INTO public.star VALUES (2, 'AlphaCentauri', 3, 1);
-INSERT INTO public.star VALUES (3, 'Betelgeuse', 0, 1);
-INSERT INTO public.star VALUES (4, 'Proxima Centauri', 1, 2);
-INSERT INTO public.star VALUES (5, 'Andromeda Alpha', 5, 2);
-INSERT INTO public.star VALUES (6, 'Andromeda Beta', 4, 2);
+INSERT INTO public.star VALUES (1, 'Sun', 8, 1, NULL, NULL);
+INSERT INTO public.star VALUES (2, 'AlphaCentauri', 3, 1, NULL, NULL);
+INSERT INTO public.star VALUES (3, 'Betelgeuse', 0, 1, NULL, NULL);
+INSERT INTO public.star VALUES (4, 'Proxima Centauri', 1, 2, NULL, NULL);
+INSERT INTO public.star VALUES (5, 'Andromeda Alpha', 5, 2, NULL, NULL);
+INSERT INTO public.star VALUES (6, 'Andromeda Beta', 4, 2, NULL, NULL);
 
 
 --
@@ -439,6 +444,54 @@ ALTER TABLE ONLY public.star
 
 
 --
+-- Name: galaxy unique_galaxy_id; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT unique_galaxy_id UNIQUE (galaxy_id);
+
+
+--
+-- Name: galaxy unique_galaxy_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT unique_galaxy_name UNIQUE (name);
+
+
+--
+-- Name: moon unique_moon_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT unique_moon_name UNIQUE (name);
+
+
+--
+-- Name: galaxy unique_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT unique_name UNIQUE (name);
+
+
+--
+-- Name: planet unique_planet_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT unique_planet_name UNIQUE (name);
+
+
+--
+-- Name: star unique_star_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT unique_star_name UNIQUE (name);
+
+
+--
 -- Name: moon moon_planet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
@@ -467,7 +520,7 @@ ALTER TABLE ONLY public.planet
 --
 
 ALTER TABLE ONLY public.space_ship
-    ADD CONSTRAINT space_ship_current_location_fkey FOREIGN KEY (current_location) REFERENCES public.galaxy(galaxy_id);
+    ADD CONSTRAINT space_ship_current_location_fkey FOREIGN KEY (galaxy_id) REFERENCES public.galaxy(galaxy_id);
 
 
 --
@@ -475,7 +528,7 @@ ALTER TABLE ONLY public.space_ship
 --
 
 ALTER TABLE ONLY public.space_ship
-    ADD CONSTRAINT space_ship_origin_planet_fkey FOREIGN KEY (origin_planet) REFERENCES public.planet(planet_id);
+    ADD CONSTRAINT space_ship_origin_planet_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
 
 
 --
